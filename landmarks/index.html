@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Google Maps</title>
+  <style>
+  #map{
+    height:400px;
+    width:100%;
+  }</style>
+</head>
+<body>
+<h id="header">My Google Map</h>
+<div id="map"></div>
+<script>
+  function initMap(){
+    //Map options
+    var options = {
+      zoom:10,
+      center:{lat:42.3601,lng:-71.0589}
+    }
+    //New map
+    var map = new google.maps.Map(document.getElementById('map'), options);
+
+
+    //Get User Location
+    var x = document.getElementById("header");
+    function getLocation(){
+      if (navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        x.innerHTML = "geolocation is not suppored by this browser";
+        }
+    }
+    //Display User Location
+    /*
+    function showPosition(position) {
+      x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " +
+      position.coords.longitude;
+    }
+    */
+    function showPosition(position) {
+      lat1 = position.coords.latitude;
+      lng1 = position.coords.longitude;
+      x.innerHTML = "Latitude: " + lat1+ "<br>Longitude: " +
+      lng1;
+    }
+    getLocation();
+
+    /*
+    // Listen for click on map
+    google.map.event.addListener(map, 'click', function(event){
+      // Add marker
+      addMarker({coords:event.latLng});
+    });
+    */
+
+
+    /*
+    //array of markers
+    var markers = [
+      {
+        coords:{lat:42.4019,lng:-71.1193},
+        iconImage:'hifi.png',
+        content:'<h1>Tufts</h1>'
+      },
+      {
+        coords:{lat:42.8584,lng:-70.9300},
+        content:'<h1>Somewhere in MA</h1>'
+      },
+      {
+        coords:{lat:42.7762,lng:-71.0773}
+      }
+    ];
+    // Loop through markers
+    for(var i=0; i <markers.length; i++){
+      // Add markers as iterating through array
+      addMarker(markers[i]);
+    }
+    */
+
+
+
+
+
+  /*
+    addMarker({
+      coords:{lat:42.4019,lng:-71.1193},
+      //iconImage:'hifi.png',
+      content:'<h1>Tufts</h1>'
+    });
+    addMarker({
+      coords:{lat:42.8584,lng:-70.9300},
+      content:'<h1>Somewhere in bumfuck MA</h1>'
+    });
+    addMarker({coords:{lat:42.7762,lng:-71.0773}});
+
+
+    addMarker({
+      coords:{lat:data.people[0].lat,lng:data.people[0].lng},
+      content:'<h1>Generated using parsed JSON</h1>'
+    });
+
+
+    //Testing unique marker function
+    addMarker2({
+      coords:{lat:at1,lng:lng1},
+      content:'<h1>Unique Marker</h1>'
+    });
+
+    //Testing regular marker function with unique content
+    addMarker({
+      coords:{lat:lat1,lng:lng1},
+      content:'<h1>Unique Marker</h1>'
+    });
+  */
+
+
+    for (var i = 1; i < people_count; i++)
+    {
+      if (i == 0)
+      {
+        addMarker({
+          coords:{lat:lat1,lng:lng1},
+          content:'<h1>Unique Marker</h1>'
+        });
+      } else {
+      addMarker({
+        coords:{lat:data.people[i].lat,lng:data.people[i].lng},
+        content:'<h1>Generated using parsed JSON</h1>'
+      });
+      }
+    }
+
+
+    for (var i = 0; i < landmarks; i++)
+    {
+      addMarker({
+        coords:{lat:data.landmarks[i].geometry.coordinates[1],lng:data.landmarks[i].geometry.coordinates[0]},
+        content:'<h1>Landmarks </h1>',
+        //icon:'red-dot.png'
+      })
+    }
+
+
+
+    function addMarker2(props){
+      alert(lat1, lat2);  // <----------------------------------- TESTING
+      var marker = new google.maps.Marker({
+        position:props.coords,
+        map:map,
+        icon: 'red-dot.png'
+    });
+    //check for custom icon
+    if(props.iconImage){
+      marker.setIcon(props.iconImage);
+    }
+    //check content
+    if(props.content){
+      var infoWindow = new google.maps.InfoWindow({
+        content:props.content
+      });
+      marker.addListener('click',function(){
+        infoWindow.open(map, marker);
+      })
+    }
+  }
+
+
+
+    //Add Marker function
+    function addMarker(props){
+      var marker = new google.maps.Marker({
+        position:props.coords,
+        map:map,
+        //icon: 'red-dot.png'
+        icon:'hifi.png'
+      });
+      //check for custom icon
+      if(props.iconImage){
+        marker.setIcon(props.iconImage);
+      }
+      //check content
+      if(props.content){
+        var infoWindow = new google.maps.InfoWindow({
+          content:props.content
+        });
+        marker.addListener('click',function(){
+          infoWindow.open(map, marker);
+        })
+      }
+    }
+    /*
+    //Add marker
+    var marker = new google.maps.Marker({
+      position:{lat:42.4019,lng:-71.1193},
+      map:map,
+      icon:'hifi.png'
+    });
+
+    var infoWindow = new google.maps.InfoWindow({
+      content:'<h1>Tufts, La Casa</h1>'
+    });
+    marker.addListener('click',function(){
+      infoWindow.open(map, marker);
+    })
+    */
+  }
+  //API KEY: AIzaSyDEdSGXczg_gK4Yb6e37bzRaQiH1LBl_Ro
+
+    //function requestTest(){
+      request = new XMLHttpRequest();
+      url = "https://defense-in-derpth.herokuapp.com/sendLocation";
+      //Username and latitude/longitude
+      params = "login=q0aKzwo0&lat=42.4075&lng=-71.119";
+      request.open("POST", url, true);
+      request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      request.onreadystatechange = function() {
+        if (request.readyState == 4 && request.status == 200)
+        {
+          //alert(request.responseText);
+          console.log(request.responseText);
+          //var data = request.responseText;
+          data = JSON.parse(request.responseText);
+          // Check for size of data
+          /*
+          count = 0;
+          var i;
+          for (i in data) {
+            if (data.hasOwnProperty(i)) {
+            count++;
+            }
+          }
+          */
+          landmarks = Object.keys(data.landmarks).length;
+          people_count = Object.keys(data.people).length;
+          //document.getElementById('header1').innerHTML = data.landmarks[0].geometry.coordinates;
+          document.getElementById('header1').innerHTML = data.landmarks[0].properties.Location_Name;
+
+          // undefined alert(data.length);
+          //login1 = data.people[0].login;
+          //people = data.people;
+          //document.getElementById('header1').innerHTML = data.size('people');
+          document.getElementById('header2').innerHTML = data.people[0].lat;
+          document.getElementById('header3').innerHTML = data.people[0].lng;
+          document.getElementById('header4').innerHTML = data.people[0].login;
+          //document.getElementById('header4').innerHTML = data.people.size;
+
+
+          //document.getElementById('header').innerHTML = data.people[0].lng;
+          //alert(data);
+          //console.log(data);
+          //alert(request.responseText);
+        }
+
+      }
+      request.send(params);
+    //}
+</script>
+<script async defer
+   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEdSGXczg_gK4Yb6e37bzRaQiH1LBl_Ro&callback=initMap">
+   </script>
+
+    # Adding the landmarks data
+   <h1 id = "header1">Calling login</h1>
+   <h1 id = "header2">Calling lat</h1>
+   <h1 id = "header3">Calling lng</h1>
+   <h1 id = "header4">Calling lng</h1>
+
+
+
+
+</body>
+
+</html>
