@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Captain's Log</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+        // Your work will be done here...
+            //clearing storage before for testing purposes
+            //localStorage.clear();
+            
+            //Creating a keys variable to increment key and pass it to localStorage
+            var keyName = 0;
+             
+       $(document).keypress(function(kee) {
+    if(kee.which == 13) {
+        //alert('You pressed enter!');
+        var input = document.getElementById("msg");
+//localStorage.setItem("entries", input.value);
+        localStorage.setItem(keyName, input.value);
+        //var logs = localStorage.getItem("entries");
+        var logs = localStorage.getItem(keyName);
+        $("div").after("<p>"+logs+"</p>");
+        //$("h3").append(localStorage.length);
+        keyName++;
+        
+        if (localStorage.length() > 0)
+                {
+                    for(var i=0, len=localStorage.length; i<len; i++) {
+            var key = localStorage.key(i);
+            var value = localStorage[key];
+            $("h1").after(key + " => " + value);
+        };
+                };
+        
+    }           
+});  
+         /*
+            for(var i=0, len=localStorage.length; i<len; i++) {
+        var key = localStorage.key(i);
+        var value = localStorage[key];
+       // if(value.equals(desired_value))
+        alert(key + " => " + value);
+        } */
+        
+            });
+    </script>
+</head>
+
+<body>
+    <h1>Captain's Log</h1>
+    <h3>New entry: <input type="text" id="msg" name="msg" size="30" /></h3>
+    <div id="log"></div>
+</body>
+</html>
