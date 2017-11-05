@@ -23,8 +23,6 @@
     }
     //New map
     var map = new google.maps.Map(document.getElementById('map'), options);
-
-
     //Get User Location
     var x = document.getElementById("header");
     function getLocation(){
@@ -48,7 +46,6 @@
       lng1;
     }
     getLocation();
-
     /*
     // Listen for click on map
     google.map.event.addListener(map, 'click', function(event){
@@ -56,8 +53,6 @@
       addMarker({coords:event.latLng});
     });
     */
-
-
     /*
     //array of markers
     var markers = [
@@ -80,11 +75,6 @@
       addMarker(markers[i]);
     }
     */
-
-
-
-
-
   /*
     addMarker({
       coords:{lat:42.4019,lng:-71.1193},
@@ -96,28 +86,21 @@
       content:'<h1>Somewhere in bumfuck MA</h1>'
     });
     addMarker({coords:{lat:42.7762,lng:-71.0773}});
-
-
     addMarker({
       coords:{lat:data.people[0].lat,lng:data.people[0].lng},
       content:'<h1>Generated using parsed JSON</h1>'
     });
-
-
     //Testing unique marker function
     addMarker2({
       coords:{lat:at1,lng:lng1},
       content:'<h1>Unique Marker</h1>'
     });
-
     //Testing regular marker function with unique content
     addMarker({
       coords:{lat:lat1,lng:lng1},
       content:'<h1>Unique Marker</h1>'
     });
   */
-
-
     for (var i = 1; i < people_count; i++)
     {
       if (i == 0)
@@ -133,8 +116,6 @@
       });
       }
     }
-
-
     for (var i = 0; i < landmarks; i++)
     {
       addMarker({
@@ -143,9 +124,6 @@
         //icon:'red-dot.png'
       })
     }
-
-
-
     function addMarker2(props){
       alert(lat1, lat2);  // <----------------------------------- TESTING
       var marker = new google.maps.Marker({
@@ -167,9 +145,6 @@
       })
     }
   }
-
-
-
     //Add Marker function
     function addMarker(props){
       var marker = new google.maps.Marker({
@@ -199,7 +174,6 @@
       map:map,
       icon:'hifi.png'
     });
-
     var infoWindow = new google.maps.InfoWindow({
       content:'<h1>Tufts, La Casa</h1>'
     });
@@ -209,7 +183,6 @@
     */
   }
   //API KEY: AIzaSyDEdSGXczg_gK4Yb6e37bzRaQiH1LBl_Ro
-
     //function requestTest(){
       request = new XMLHttpRequest();
       url = "https://defense-in-derpth.herokuapp.com/sendLocation";
@@ -238,7 +211,6 @@
           people_count = Object.keys(data.people).length;
           //document.getElementById('header1').innerHTML = data.landmarks[0].geometry.coordinates;
           document.getElementById('header1').innerHTML = data.landmarks[0].properties.Location_Name;
-
           // undefined alert(data.length);
           //login1 = data.people[0].login;
           //people = data.people;
@@ -247,14 +219,11 @@
           document.getElementById('header3').innerHTML = data.people[0].lng;
           document.getElementById('header4').innerHTML = data.people[0].login;
           //document.getElementById('header4').innerHTML = data.people.size;
-
-
           //document.getElementById('header').innerHTML = data.people[0].lng;
           //alert(data);
           //console.log(data);
           //alert(request.responseText);
         }
-
       }
       request.send(params);
     //}
