@@ -41,6 +41,7 @@
         
           console.log("inside geoLocation");
           
+            //unique user's coordinates
         lat1 = position.coords.latitude;
         lng1 = position.coords.longitude;
         x.innerHTML = "Latitude: " + lat1+ "<br>Longitude: " +
@@ -80,7 +81,30 @@
               document.getElementById('header4').innerHTML = data.people[0].login;
               //document.getElementById('header4').innerHTML = data.people.size;
 
-
+                /*
+                //Setting my lat/lng to a variable
+                myLatLng = new google.maps.LatLng({lat: data.people[0].lat, lng: data.people[0].lng}); 
+                //Setting the location of compared value
+                urLatLng = new google.maps.LatLng({lat: data.people[1].lat, lng: data.people[1].lng});
+                */
+                
+                myLatLng = new google.maps.LatLng({lat: lat1, lng: lng1}); 
+                //urLatLng = new google.maps.LatLng({lat: 33.7436, lng: 117.8741});
+                
+                
+                 
+                
+               
+                    
+                    
+                    
+                
+                distanceBetween = google.maps.geometry.spherical.computeDistanceBetween;
+                //console.log("The distance between Tufts and Santa Ana is: " + (distanceBetween(myLatLng, urLatLng))/1609.344 + " miles");
+                //calculating distance between two points, dividing by 1609.344 to convert from meters to miles
+                
+                
+                
               //document.getElementById('header').innerHTML = data.people[0].lng;
               //alert(data);
               //console.log(data);
@@ -95,10 +119,14 @@
                     coords:{lat:lat1,lng:lng1},
                     content:'<h1>'+data.people[i].login+'</h1>'
                   });
+                    
                 } else {
-                addMarker({
+                    urLatLng = new google.maps.LatLng({lat: data.people[i].lat, lng: data.people[i].lng});
+                    distanceApart = (distanceBetween(myLatLng,urLatLng))/1609.344 ;
+                
+                    addMarker({
                   coords:{lat:data.people[i].lat,lng:data.people[i].lng},
-                  content:'<h1>'+data.people[i].login+'</h1>'
+                  content:'<h1>Login: '+data.people[i].login+' distance: ' + distanceApart + '</h1>'
                 });
                     //logging username on info window
                 }
@@ -107,17 +135,43 @@
 
               for (var i = 0; i < landmarks; i++)
               {
-                addMarker({
-                  coords:{lat:data.landmarks[i].geometry.coordinates[1],lng:data.landmarks[i].geometry.coordinates[0]},
-                  content:'<h1>'+data.landmarks[i].properties.Location_Name+'</h1>',
-                  //icon:'red-dot.png'
-                })
+                   //for landmarks
+                urLatLng = new google.maps.LatLng({lat:data.landmarks[i].geometry.coordinates[1], lng: data.landmarks[i].geometry.coordinates[0]});
+                distanceApart = (distanceBetween(myLatLng,urLatLng))/1609.344 ;
+                if (distanceApart < 1)
+                    {
+                        addMarker3({
+                            coords:{lat:data.landmarks[i].geometry.coordinates[1],lng:data.landmarks[i].geometry.coordinates[0]},
+                            content:'<h1>Landmark: '+ data.landmarks[i].properties.Location_Name +' distance: ' + distanceApart + '</h1>'
+                        })
+                    }
+                
               }
 
-
-
+                //adds markers for landmarks
+                function addMarker3(props){
+                var marker = new google.maps.Marker({
+                  position:props.coords,
+                  map:map,
+                  icon: 'https://www.localguidesconnect.com/html/assets/images/favicon.ico'
+              });
+              //check for custom icon
+              if(props.iconImage){
+                marker.setIcon(props.iconImage);
+              }
+              //check content
+              if(props.content){
+                var infoWindow = new google.maps.InfoWindow({
+                  content:props.content
+                });
+                marker.addListener('click',function(){
+                  infoWindow.open(map, marker);
+                })
+              }
+            }
+                
+                //adds unique marker for user
               function addMarker2(props){
-                //alert(lat1, lat2);  // <----------------------------------- TESTING
                 var marker = new google.maps.Marker({
                   position:props.coords,
                   map:map,
@@ -194,7 +248,7 @@
     //}
 </script>
 <script async defer
-   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEdSGXczg_gK4Yb6e37bzRaQiH1LBl_Ro&callback=initMap">
+   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEdSGXczg_gK4Yb6e37bzRaQiH1LBl_Ro&libraries=geometry&callback=initMap">
    </script>
 
     # Adding the landmarks data
