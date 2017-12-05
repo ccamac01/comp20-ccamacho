@@ -8,26 +8,61 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
+        //var logRay = [];
+        var keyName = 0;
         $(document).ready(function(){
         // Your work will be done here...
             //clearing storage before for testing purposes
             //localStorage.clear();
-            
             //Creating a keys variable to increment key and pass it to localStorage
-            var keyName = 0;
+            //var keyName = 0;
              
-       $(document).keypress(function(kee) {
-    if(kee.which == 13) {
+
+            /*
+            console.log("logRay length = "+logRay.length);
+            //var logRay = []; 
+
+            var len=logRay.length;
+            for(var i=len; i<len; i++) {
+                $("div").after("<p>"+logRay[i]+"</p>");
+            };  
+            */
+
+            
+            //if (localStorage.length > 0)
+              //  {
+            var len=localStorage.length;
+            console.log(len);
+            var i;
+            for(i = 0; i<len; i++) {
+                var key = localStorage.key(i);
+                var value = localStorage.getItem(key);
+                console.log("I'm in print loop");
+                //[key] in getItem
+            //"h3"
+                $("div").after("<p>"+value+"</p>");
+        //};
+                };
+                
+             
+            $(document).keypress(function(kee) {
+                if(kee.which == 13) {
         //alert('You pressed enter!');
-        var input = document.getElementById("msg");
+                var input = document.getElementById("msg");
 //localStorage.setItem("entries", input.value);
-        localStorage.setItem(keyName, input.value);
+                localStorage.setItem(keyName, input.value);
         //var logs = localStorage.getItem("entries");
-        var logs = localStorage.getItem(keyName);
-        $("div").after("<p>"+logs+"</p>");
+                var logs = localStorage.getItem(keyName);
+                $("div").after("<p>"+logs+"</p>");
         //$("h3").append(localStorage.length);
-        keyName++;
-        
+                keyName++;  
+                //logRay.push(logs);
+                //console.log(logRay);  
+                console.log(localStorage.length);
+                console.log(logs); 
+                new Date();
+                console.log(Date.now());   
+        /*
         if (localStorage.length() > 0)
                 {
                     for(var i=0, len=localStorage.length; i<len; i++) {
@@ -36,9 +71,12 @@
             $("h1").after(key + " => " + value);
         };
                 };
+                */
         
-    }           
-});  
+                }           
+            });  
+
+
          /*
             for(var i=0, len=localStorage.length; i<len; i++) {
         var key = localStorage.key(i);
@@ -47,7 +85,7 @@
         alert(key + " => " + value);
         } */
         
-            });
+        });
     </script>
 </head>
 
