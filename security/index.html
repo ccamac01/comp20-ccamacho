@@ -39,14 +39,74 @@ to prevent similar exploits.</p></li>
   application, I tested the application step-by-step with methods such as
 cross-site scripting. By purposedly submitting malicious responses on the user
 interface, I was able to disrupt the application and gain control of certain
- aspects.</p></li>
+ aspects. These attacks were made possible by using curl to POST the data to the
+server of the web application. By changing the "login" value to a script, the
+web page interpreted the string as JS and executed the commands. Another method
+I used, was NoSQL injection. By taking advantage of the GET requests in the URL,
+I was able to submit a MongoDB command (the web app runs on MongoDB) as a value
+for the database which was read as a command rather than a string value. For
+example, I used the [$ne] attribute (not equal to) to compare a value to all the
+values in the database. The command allowed the database to return all documents
+that were not equal to the login that I used. This gave me access to the entire
+contents of the database.</p></li>
 <li><span>Abstract of Findings</span> - Provide an overview of all the security
    and privacy issues you identified.  This section should be written for
    non-technical managers who do not have technical expertise and do not have
    time to read the entire document.  Write this section using lay language.</li>
 <li><span>Issues Found</span> - For each issue that you find, document:
+
+
 <ul>
-<li>Issue (e.g., database injection, really bad programming practice)</li>
+<li>Issue: Input was not santized/filtered and allowed the user to send scripts
+as input for login. This gave the user access to certain features of the app
+they shouldn't have.</li>
+<li>Location: This was found when sending a POST request to the page. By sending
+the correct queries, a user was able to load JavaScript within the HTML of the
+page.</li>
+<li>Severity of issue: I think this issue is of high severity. The reason being
+that the queries allow JavaScript to be executed on the page without the host's
+permission. The JS can give the user access to the login/location information
+of all the users. This invades the privacy of all the users, and thus, should
+be a top priority.</li>
+<li>Description of issue.  How did you find it?  A screenshot of problem is
+   excellent.</li>
+<li>Proof of vulnerability.  Show pictures or it didn't happen.</li>
+<li>Resolution.  Make recommendation(s) on how issue can be resolved.
+  Show code if possible.</li>
+</ul>
+<ul>
+
+  <ul>
+  <li>Issue: GET input via URL was not sanitized (query) and allowed the user to
+    submit values that were MongoDB commands. This gave the user access to
+  the entire contents of the database.</li>
+  <li>Location: This was found when sending a query value for login in the URL
+    bar (GET request). By sending the correct queries, a user was able to load
+  control the database and collect the data (all login information).</li>
+  <li>Severity of issue: I think this issue is of high severity. The reason being
+  that the user gained access to everything on the database. The commands sent
+  via GET request in the URL bar, allow the user to manipulate the database.
+  This example allowed access to everything saved on the database. This should
+be your number one security concern. </li>
+  <li>Description of issue.  How did you find it?  A screenshot of problem is
+     excellent.</li>
+  <li>Proof of vulnerability.  Show pictures or it didn't happen.</li>
+  <li>Resolution.  Make recommendation(s) on how issue can be resolved.
+    Show code if possible.</li>
+  </ul>
+  <ul>
+
+
+
+
+
+
+
+
+
+
+
+<li>Issue: (e.g., database injection, really bad programming practice)</li>
 <li>Location or page where issue was found</li>
 <li>Severity of issue (e.g., low, medium , or high).  Justify your answer.</li>
 <li>Description of issue.  How did you find it?  A screenshot of problem is
