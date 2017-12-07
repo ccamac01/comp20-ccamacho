@@ -4,24 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" href="style.css">
-      <!--
-    <h1>1) Introduction</h1>
-    <p>Provide a description of the product and what you were hired to do</p>
-    <h1>2) Methodology</h1>
-    <p>Describe your methodology pen testing the application, including the
-      tools that you used</p>
-    <h1>3) Abstract of Findings</h1>
-    <p> Provide an overview of all the security and privacy issues you
-      identified. This section should be written for non-technical managers who
-       do not have technical expertise and do not have time to read the entire
-       document. Write this section using lay language.</p>
-    <h1>4) Introduction</h1>
-    <p>Provide a description of the product and what you were hired to do</p>
-    <h1>Introduction</h1>
-    <p>Provide a description of the product and what you were hired to do</p>
-    <h1>Introduction</h1>
-    <p>Provide a description of the product and what you were hired to do</p>
-   -->
     <title>Assignment 4: Security</title>
   </head>
   <body>
@@ -57,10 +39,11 @@ contents of the database.</p></li>
    <p>After taking a look at your web application, I noticed that any user could
    easily take over certain functionalities that they should not have access to.
  For example, they can manipulate your web pages to display anything they would
-like. Most importantly, they can easily access all of your user's data through
+like. By submitting a chunk of code as a "login", the computer runs the code when
+it interprets the "login" information, giving your user access the page.
+ Most importantly, they can easily access all of your user's data through
 another method in which they trick the database thinking it is receiving a
 command rather than data values submitted by the average user.</p>
-  <p>Findings go here.</p>
  </li>
 <li><span class = "underline">Issues Found</span> - For each issue that you find, document:
 
@@ -79,13 +62,13 @@ of all the users. This invades the privacy of all the users, and thus, should
 be a top priority.</li>
 <li>Description of issue.  How did you find it?  A screenshot of problem is
    excellent.</li>
+   <p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/154226372@N07/27098930519/in/dateposted-public/" title="Screen Shot 2017-12-05 at 11.12.09 PM"><img src="https://farm5.staticflickr.com/4580/27098930519_ff68aa2f72_b.jpg" width="1024" height="664" alt="Curl POST requests"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
 <li>Proof of vulnerability.  Show pictures or it didn't happen.</li>
-<p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/154226372@N07/27098930519/in/dateposted-public/" title="Screen Shot 2017-12-05 at 11.12.09 PM"><img src="https://farm5.staticflickr.com/4580/27098930519_ff68aa2f72_b.jpg" width="1024" height="664" alt="Curl POST requests"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
-</p><p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/154226372@N07/38875422231/in/dateposted-public/" title="Screen Shot 2017-12-05 at 11.04.54 PM"><img src="https://farm5.staticflickr.com/4538/38875422231_831f1d4c59_b.jpg" width="1024" height="640" alt="POST to MongoDB"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
 </p><p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/154226372@N07/27098930689/in/dateposted-public/" title="Screen Shot 2017-12-05 at 11.04.45 PM"><img src="https://farm5.staticflickr.com/4533/27098930689_ea40b27c55_b.jpg" width="1024" height="640" alt="XSS proof"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
 </p>
-<li>Resolution.  Make recommendation(s) on how issue can be resolved.
-  Show code if possible.</li>
+<li>Resolution: This issue can be resolved by sanitizing user input. For example,
+filter out any special characters in a user's input to prevent any tags being used
+to run scripts within the HMTL.</li>
 </ul>
 
   <ul>
@@ -102,35 +85,70 @@ be a top priority.</li>
 be your number one security concern. </li>
   <li>Description of issue.  How did you find it?  A screenshot of problem is
      excellent.</li>
+     <p>If you take a look at the link below, it will redirect you to the image
+     with the proof of this exploit. If you zoom into the URL bar, you will be
+   able to see the command and where it was executed to exploit this vulnerability.</p>
   <li>Proof of vulnerability.  Show pictures or it didn't happen.</li>
 <p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/154226372@N07/38875422301/in/dateposted-public/" title="MongoDB Exploit"><img src="https://farm5.staticflickr.com/4536/38875422301_bfb09fb27a_k.jpg" width="2048" height="1280" alt="MongoDB Exploit"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
 </p>
-<li>Resolution.  Make recommendation(s) on how issue can be resolved.
-    Show code if possible.</li>
+<li>Resolution: This issue can be resolved by validating the data passed to the
+MongoDB. Either validate manually by parsing the string of special characters or
+any phrases that may send commands to the database. This can also be done with
+libraries that can do the work for you. For example, <a href = "https://github.com/hapijs/joi">Joi</a>
+can lower the risk of attacks. To deploy it on Express, you can use
+<a href = "https://github.com/continuationlabs/celebrate">Celebrate</a> access
+these libraries/tools. WARNING: These libraries do not guarantee safety, they decrease
+the risk of attack. You must take every step possible to prevent malicious hackers
+from exploiting your application and causing damage. </li>
   </ul>
 
 <ul>
-<li class = "issue">3) Issue: (e.g., database injection, really bad programming practice)</li>
-<li>Location or page where issue was found</li>
-<li>Severity of issue (e.g., low, medium , or high).  Justify your answer.</li>
+<li class = "issue">3) Issue: A mix of both cross-site scripting and database
+injection. By sending a script with a closing tag to the list tag, the script
+is run when your code tries to read everything from the database during the
+GET request /checkins.json.</li>
+<li>Location: This was found when sending a query via curl that was later
+executed by the database itself.</li>
+<li>Severity of issue: This issue is of medium severity and would only occur
+in the case that you are already protected from cross-site scripting in the
+POST section of your server-side. The query is saved as a value in the database
+and is executed when your GET function prints the database values to the screen.</li>
 <li>Description of issue.  How did you find it?  A screenshot of problem is
    excellent.</li>
+<p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/154226372@N07/24035876377/in/dateposted-public/" title="Screen Shot 2017-12-07 at 5.06.19 PM"><img src="https://farm5.staticflickr.com/4561/24035876377_055a836078_b.jpg" width="1024" height="63" alt="XSS in database"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p>
 <li>Proof of vulnerability.  Show pictures or it didn't happen.</li>
-<li>Resolution.  Make recommendation(s) on how issue can be resolved.
-  Show code if possible.</li>
+<p><a data-flickr-embed="true"  href="https://www.flickr.com/photos/154226372@N07/38875422231/in/dateposted-public/" title="Screen Shot 2017-12-05 at 11.04.54 PM"><img src="https://farm5.staticflickr.com/4538/38875422231_831f1d4c59_b.jpg" width="1024" height="640" alt="POST to MongoDB"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+</p>
+<li>Resolution: This vulnerability can be prevented by following the solutions
+to the previous vulnerabilities. By validating all user input/data carefully,
+you will minimize the risk of attack in these forms.</li>
 </ul>
 </li>
 
 
 <li><span>Conclusion</span> - You can also list future considerations and
   recommendations with costs.
-  <p>Conclusion goes here.</p>
+  <p>Overall, the vulnerabilities that I discovered with your web application
+  are pretty severe. You must take action to patch these security issues in order
+to provide a safe and secure experience for all of your users. I recommend you
+test every single functionality you add to your application by exploring any
+vulnerabilities that may arise. ALWAYS test your functionalities involving
+input from the user. NEVER trust the user and their input.</p>
 </li>
 <li><span>References</span> - A list of references and links that you used for
   your work.
-  <p>References go here.</p>
+  <p>References: I highly recommend you take a look at the following resources.
+  They may inform you on how to prevent future attacks, and they give you
+insight on the process of exploiting a website's vulnerabilities.</p>
+<ol>
+  <li><a href = "https://excess-xss.com/">Excess-XSS (Article)</li>
+  <li><a href = "https://blog.websecurify.com/2014/08/hacking-nodejs-and-mongodb.html">Hacking nodejs and mongodb (blog)</li>
+  <li><a href = "https://zanon.io/posts/nosql-injection-in-mongodb">Mongodb injection (tutorial)</li>
+  <li><a href = "https://www.websecurify.com/">Online security tools</li>
+  <li><a href = "https://www.acunetix.com/blog/articles/cross-site-request-forgery/">XSS Request Forgery (article)</li>
+  <li><a href = "https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">XSS Wiki</li>
 </li>
-
 </ol>
 
 
