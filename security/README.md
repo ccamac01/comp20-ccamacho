@@ -1,6 +1,6 @@
-# Christopher Camacho
+# Assignment 4: Security and Privacy Assessment of Client-Side and Server-Side
 ## COMP20: Web Programming
-### Assignment 4: Security and Privacy Assessment of Client-Side and Server-Side
+### Christopher Camacho
 
 1) Identify what aspects of the work have been correctly implemented and what have not.
 All aspects of the assignment have been completed correctly. I have discovered
