@@ -15,6 +15,6 @@
     "mongo": "^0.1.0",
     "mongod": "^2.0.0",
     "mongodb": "^2.2.33",
-    "validator": "^9.1.2"
+    "validator": "^13.7.0"
   }
 }
